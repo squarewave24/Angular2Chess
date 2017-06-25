@@ -19,6 +19,10 @@ app.use(express.static(path.join(__dirname, 'dist')));
 // Set our api routes
 app.use('/api', api);
 
+// resources
+app.use(express.static( 'styles'));
+app.use(express.static( 'scripts'));
+
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
