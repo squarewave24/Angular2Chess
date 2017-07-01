@@ -1,4 +1,13 @@
-
 <p>
-  {{foo}}
+
 </p>
+
+<!--<pre>
+  {{getAllPositions()}}
+</pre>-->
+
+<div class="chess-container">
+  <div *ngFor="let pos of getAllPositions()">
+      {{pos}}
+  </div>
+</div>

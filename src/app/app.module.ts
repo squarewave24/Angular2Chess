@@ -13,15 +13,6 @@ import { ChessBoardComponent } from './chess-board/chess-board.component';
 
 // Define the routes
 const ROUTES = [
-  // {
-  //   path: 'posts',
-  //   redirectTo: 'posts',
-  //   pathMatch: 'full'
-  // },
-  {
-    path: 'posts',
-    component: PostsComponent
-  },
   {
     path: 'chess',
     component: ChessBoardComponent

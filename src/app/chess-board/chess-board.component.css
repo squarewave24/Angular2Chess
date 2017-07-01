@@ -1,0 +1,15 @@
+div.chess-container {
+  display:inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 350px;
+  height: 350px;
+}
+div > div {
+  width: 50px;
+  height: 50px;
+  background-color:gray;
+}
+div:nth-child(even){
+  background-color:white;
+}
