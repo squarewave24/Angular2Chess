@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { PostsComponent } from './posts/posts.component';
 import { PostsService } from './posts.service';
+import { ChessBoardComponent } from './chess-board/chess-board.component';
 
 
 // Define the routes
@@ -20,13 +21,18 @@ const ROUTES = [
   {
     path: 'posts',
     component: PostsComponent
+  },
+  {
+    path: 'chess',
+    component: ChessBoardComponent
   }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostsComponent
+    PostsComponent,
+    ChessBoardComponent
   ],
   imports: [
     BrowserModule,
