@@ -4,10 +4,43 @@ const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
 
+const cors = require('cors');
+const multer = require('multer');
+  
+
 // Get our API routes
 const api = require('./server/routes/api');
 
 const app = express();
+
+// UPLOADER code *******************
+// cors for uploader
+app.use(cors());
+const upload = multer({
+  dest: 'uploads/',
+  storage: multer.diskStorage({
+    filename: (req, file, cb) => {
+      let ext = path.extname(file.originalname);
+      cb(null, `${Math.random().toString(36).substring(7)}${ext}`);
+    }
+  })
+});
+app.post('/upload', upload.any(), (req, res) => {
+  res.json(req.files.map(file => {
+    let ext = path.extname(file.originalname);
+
+    console.log('req: ', req.files);
+
+    return {
+      originalName: file.originalname,
+      filename: file.filename
+    }
+  }));
+});
+app.listen(10050, () => {
+  console.log('ng2-uploader server running on port 10050.');
+});
+// uploader code *****
 
 // Parsers for POST data
 app.use(bodyParser.json());

@@ -1,13 +1,26 @@
-<p>
 
-</p>
+<input type="file"
+       ngFileSelect
+       [options]="options"
+       (onUpload)="handleUpload($event)"
+       (beforeUpload)="beforeUpload($event)">
+<br /><br />
+       
+<!--<div ngFileDrop
+     [options]="options"
+     (onUpload)="handleUpload($event)"
+     [ngClass]="{'file-over': hasBaseDropZoneOver}"
+     (onFileOver)="fileOverBase($event)"
+     (beforeUpload)="beforeUpload($event)">
+</div>-->
+<div>
+Response: {{ uploadFile | json }}
+</div>
 
-<!--<pre>
-  {{getAllPositions()}}
-</pre>-->
 
 <div class="chess-container">
   <div *ngFor="let pos of getAllPositions()">
       {{pos}}
   </div>
 </div>
+

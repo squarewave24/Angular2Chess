@@ -13,3 +13,4 @@ div > div {
 div:nth-child(even){
   background-color:white;
 }
+.file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
