@@ -29,17 +29,25 @@ app.post('/upload', upload.any(), (req, res) => {
   res.json(req.files.map(file => {
     let ext = path.extname(file.originalname);
 
-    console.log('req: ', req.files);
+    console.log('req.files: ', req.files);
+    console.log('req.body: ', req.body);
+    // console.log('bodyParser.text: ', bodyParser.text());
+
+    // res.end(JSON.stringify(req.body, null, 2));
 
     return {
       originalName: file.originalname,
-      filename: file.filename
+      filename: file.filename,
+      json: JSON.stringify({
+            body: req.body
+      })
     }
   }));
 });
 app.listen(10050, () => {
   console.log('ng2-uploader server running on port 10050.');
 });
+
 // uploader code *****
 
 // Parsers for POST data
