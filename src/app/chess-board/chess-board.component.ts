@@ -64,6 +64,13 @@ export class ChessBoardComponent implements OnInit {
 
     ]
   }
+  loadPieces(allPieces:string){
+    allPieces.split('/').forEach((row,idx) => {
+      this.positions[idx] = row.split('');
+    });
+    console.debug('this.positions', this.positions);
+  }
+  
   getAllPositions() {
     // this.positions.forEach(row => row.forEach(cell => ))
     var idx = 0;
