@@ -2,8 +2,8 @@ div.chess-container {
   display:flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 350px;
-  height: 350px;
+  width: 400px;
+  /*height: 350px;*/
 }
 div > div {
   width: 50px;
@@ -16,12 +16,57 @@ div > div {
 div:nth-child(even){
   background-color:white;
 }
- div.p::after {
-    content: "\2659"; 
-    margin: auto;
-}
- div.P::after {
-    content: "\265F"; 
-    margin: auto;
-}
 .file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+
+
+table {
+	border-collapse: collapse;
+	background: gray;
+}
+td {
+    width: 50px; height: 50px;
+     font-size: 17pt;
+      align-content: center;  
+      text-align: center;  
+}
+
+tr:nth-child(odd) td:nth-child(even), tr:nth-child(even) td:nth-child(odd) {
+	background: white;
+}
+.p::after {
+    content: "\2659"; 
+}
+.k::after{
+    content: "\2654";
+}
+.q::after {
+    content: "\2655";
+}
+.r::after {
+    content: "\2656";
+}
+.b::after {
+    content: "\2657";
+}
+.n::after {
+    content: "\2658";
+}
+
+.P::after {
+    content: "\265F"; 
+}
+.K::after{
+    content: "\265A";
+}
+.Q::after {
+    content: "\265B";
+}
+.R::after {
+    content: "\265C";
+}
+.B::after {
+    content: "\265D";
+}
+.N::after {
+    content: "\265E";
+}

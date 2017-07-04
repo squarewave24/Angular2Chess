@@ -18,9 +18,10 @@ Response: {{ uploadFile | json }}
 </div>
 
 
-<div class="chess-container">
-  <div *ngFor="let pos of getAllPositions()" class="{{pos}}">
-      <!--{{pos}}-->
-  </div>
-</div>
+
+<table>
+	<tr *ngFor="let row of positions">
+    <td *ngFor="let piece of row" class="{{piece}}"></td>
+	</tr>
+</table>
 
