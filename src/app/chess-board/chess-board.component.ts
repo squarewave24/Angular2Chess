@@ -1,8 +1,9 @@
+/// ref
 import { Component, OnInit } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 
-import { Ng2UploaderModule } from 'ng2-uploader';
-
+import { ChessService } from './chess.service';
+import { IGameBoard, IBoard, IMoveSquares, IPosition } from './interfaces';
 
 
 @Component({
@@ -15,40 +16,29 @@ export class ChessBoardComponent implements OnInit {
 
   positions: string[][];
   highlights: boolean[][] = [];
-  uploadFile: any;
-  hasBaseDropZoneOver: boolean = false;
-  options: Object = {
-    url: 'http://localhost:10050/upload'
-  };
-  sizeLimit = 2000000;
+  currentIndex: number = 0;
 
-  constructor() { }
+  constructor(private svc: ChessService) { }
+
   ngOnInit() {
     this.initPositions();
   }
 
-
-  handleUpload(data): void {
-    console.debug('handleUpload', data);
-    if (data && data.response) {
-      data = JSON.parse(data.response);
-      this.uploadFile = data;
-    }
+  loadBoard() {
+    this.svc.getBoard().subscribe(value => this.updateBoard((value.json() as IGameBoard).board));
   }
-  fileOverBase(e: any): void {
-    this.hasBaseDropZoneOver = e;
+  loadNext() {
+    this.svc.getMoves(this.currentIndex++).subscribe(value => this.updateBoard(value.json() as IBoard));
   }
+  
+  updateBoard(board:IBoard){
+    console.log('updateBoard ', board);
+    this.loadPieces(board.pieces);
+    this.setHighlight(board.last_move_squares.to.row, board.last_move_squares.to.col);
 
-  beforeUpload(uploadingFile): void {
-    console.debug('beforeUpload ', uploadingFile);
-    if (uploadingFile.size > this.sizeLimit) {
-      uploadingFile.setAbort();
-      alert('File is too large');
-    }
+    if (board.special_square)
+      this.setHighlight(board.special_square.row, board.special_square.col );
   }
-
-
-
 
 
   initPositions() {
@@ -66,17 +56,17 @@ export class ChessBoardComponent implements OnInit {
     ]
   }
   loadPieces(allPieces: string) {
+    console.debug('loadPieces', allPieces);
     allPieces.split('/').forEach((row, idx) => {
       this.positions[idx] = row.split('');
     });
-    console.debug('this.positions', this.positions);
   }
   setHighlight(row: number, column: number) {
-    if (!this.highlights[row]) this.highlights[row] = [];
+    this.highlights[row] = this.highlights[row] || [];
     this.highlights[row][column] = true;
   }
   getHighlight(row: number, column: number) {
-    return this.highlights[column] && this.highlights[column][row];
+    return this.highlights[row] && this.highlights[row][column];
   }
 
   // getAllPositions() {

@@ -1,26 +1,14 @@
 
-<input type="file"
-       ngFileSelect
-       [options]="options"
-       (onUpload)="handleUpload($event)"
-       (beforeUpload)="beforeUpload($event)">
-<br /><br />
-       
-
-<div>
-Response: {{ uploadFile | json }}
-</div>
-
 
 
 <table>
 	<tr *ngFor="let row of positions; let ri = index">
     <td *ngFor="let piece of row; let ci = index" class="{{piece}}" [ngClass]="{'highlight': getHighlight(ri,ci)}">
-      
     </td>
 	</tr>
 </table>
+<div class="rb-main-button-area">
 
-<button (click)="loadPieces('qRRqRqee/eeReReeR/qRRReqee/eeqeRqqq/eeeqeeee/eqqqReRe/eeeqeeee/RqReRqRe')">load posittions</button>
-<button (click)="setHighlight(1,3)">highlight</button>
-
+  <button class="btn btn-info" (click)="loadBoard()">load board</button>
+  <button class="btn btn-info" (click)="loadNext()">load board {{currentIndex + 1}}</button>
+</div>

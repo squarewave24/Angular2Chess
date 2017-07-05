@@ -10,7 +10,8 @@ import { PostsComponent } from './posts/posts.component';
 import { PostsService } from './posts.service';
 import { ChessBoardComponent } from './chess-board/chess-board.component';
 
-import { Ng2UploaderModule } from 'ng2-uploader';
+// import { Ng2UploaderModule } from 'ng2-uploader';
+import {ChessService } from './chess-board/chess.service';
 
 // Define the routes
 const ROUTES = [
@@ -30,10 +31,14 @@ const ROUTES = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES),
-    Ng2UploaderModule
+    RouterModule.forRoot(ROUTES)
+    
   ],
-  providers: [PostsService],
+  providers: [
+    PostsService,
+    ChessService
+  ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
