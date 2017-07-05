@@ -14,6 +14,7 @@ import { Ng2UploaderModule } from 'ng2-uploader';
 export class ChessBoardComponent implements OnInit {
 
   positions: string[][];
+  highlights: boolean[][] = [];
   uploadFile: any;
   hasBaseDropZoneOver: boolean = false;
   options: Object = {
@@ -22,6 +23,9 @@ export class ChessBoardComponent implements OnInit {
   sizeLimit = 2000000;
 
   constructor() { }
+  ngOnInit() {
+    this.initPositions();
+  }
 
 
   handleUpload(data): void {
@@ -45,9 +49,6 @@ export class ChessBoardComponent implements OnInit {
 
 
 
-  ngOnInit() {
-    this.initPositions();
-  }
 
 
   initPositions() {
@@ -64,27 +65,34 @@ export class ChessBoardComponent implements OnInit {
 
     ]
   }
-  loadPieces(allPieces:string){
-    allPieces.split('/').forEach((row,idx) => {
+  loadPieces(allPieces: string) {
+    allPieces.split('/').forEach((row, idx) => {
       this.positions[idx] = row.split('');
     });
     console.debug('this.positions', this.positions);
   }
-  
-  getAllPositions() {
-    // this.positions.forEach(row => row.forEach(cell => ))
-    var idx = 0;
-
-    return this.positions
-      .reduce((prev, curr) => prev.concat(curr))
-      .map(pos => {
-        idx++;
-        return {
-          piece: pos,
-          // idx: idx++,
-          dark: idx % 2 % Math.floor(idx/8) == 0
-        }
-      });
+  setHighlight(row: number, column: number) {
+    if (!this.highlights[row]) this.highlights[row] = [];
+    this.highlights[row][column] = true;
   }
+  getHighlight(row: number, column: number) {
+    return this.highlights[column] && this.highlights[column][row];
+  }
+
+  // getAllPositions() {
+  //   // this.positions.forEach(row => row.forEach(cell => ))
+  //   var idx = 0;
+
+  //   return this.positions
+  //     .reduce((prev, curr) => prev.concat(curr))
+  //     .map(pos => {
+  //       idx++;
+  //       return {
+  //         piece: pos,
+  //         // idx: idx++,
+  //         dark: idx % 2 % Math.floor(idx/8) == 0
+  //       }
+  //     });
+  // }
 
 }

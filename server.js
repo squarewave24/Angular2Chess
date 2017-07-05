@@ -4,6 +4,9 @@ const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
 
+
+
+
 const cors = require('cors');
 const multer = require('multer');
   
@@ -28,7 +31,6 @@ const upload = multer({
 app.post('/upload', upload.any(), (req, res) => {
   res.json(req.files.map(file => {
     let ext = path.extname(file.originalname);
-
     console.log('req.files: ', req.files);
     console.log('req.body: ', req.body);
     // console.log('bodyParser.text: ', bodyParser.text());
@@ -37,10 +39,7 @@ app.post('/upload', upload.any(), (req, res) => {
 
     return {
       originalName: file.originalname,
-      filename: file.filename,
-      json: JSON.stringify({
-            body: req.body
-      })
+      filename: file.filename
     }
   }));
 });
@@ -49,6 +48,13 @@ app.listen(10050, () => {
 });
 
 // uploader code *****
+
+// api 
+  // var router = express.Router();              // get an instance of the express Router
+ 
+  // app.use('/api', router);
+
+// 
 
 // Parsers for POST data
 app.use(bodyParser.json());
