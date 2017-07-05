@@ -17,6 +17,7 @@ export class ChessBoardComponent implements OnInit {
   positions: string[][];
   highlights: boolean[][] = [];
   currentIndex: number = 0;
+  boardSummary: string;
 
   constructor(private svc: ChessService) { }
 
@@ -25,21 +26,28 @@ export class ChessBoardComponent implements OnInit {
   }
 
   loadBoard() {
+    this.clear();
     this.svc.getBoard().subscribe(value => this.updateBoard((value.json() as IGameBoard).board));
   }
   loadNext() {
-    this.svc.getMoves(this.currentIndex++).subscribe(value => this.updateBoard(value.json() as IBoard));
+    this.clear();
+    var idx = this.currentIndex++;
+    this.svc.getMoves(idx).subscribe(value => this.updateBoard(value.json() as IBoard, `Board ${idx}`));
   }
   
-  updateBoard(board:IBoard){
+  updateBoard(board:IBoard, title:string = null){
     console.log('updateBoard ', board);
+    var from = board.last_move_squares.from;
+    var to = board.last_move_squares.to;
+
+    this.boardSummary = `${title || 'Main Board'} last:${from.row}:${from.col}-${to.row}:${to.col} ${board.pieces}`
     this.loadPieces(board.pieces);
-    this.setHighlight(board.last_move_squares.to.row, board.last_move_squares.to.col);
+    this.setHighlight(to.row, to.col);
+    this.setHighlight(from.row, from.col);
 
     if (board.special_square)
       this.setHighlight(board.special_square.row, board.special_square.col );
   }
-
 
   initPositions() {
     this.positions = [
@@ -51,8 +59,6 @@ export class ChessBoardComponent implements OnInit {
       ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'],
       ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
       ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
-
-
     ]
   }
   loadPieces(allPieces: string) {
@@ -68,21 +74,8 @@ export class ChessBoardComponent implements OnInit {
   getHighlight(row: number, column: number) {
     return this.highlights[row] && this.highlights[row][column];
   }
-
-  // getAllPositions() {
-  //   // this.positions.forEach(row => row.forEach(cell => ))
-  //   var idx = 0;
-
-  //   return this.positions
-  //     .reduce((prev, curr) => prev.concat(curr))
-  //     .map(pos => {
-  //       idx++;
-  //       return {
-  //         piece: pos,
-  //         // idx: idx++,
-  //         dark: idx % 2 % Math.floor(idx/8) == 0
-  //       }
-  //     });
-  // }
+  clear() {
+    this.highlights = [];
+  }
 
 }

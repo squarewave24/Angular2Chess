@@ -1,6 +1,10 @@
 
 
-
+<div class="rb-main-button-area">
+  <span class="board-summary">
+    {{boardSummary}}
+  </span>
+</div>
 <table>
 	<tr *ngFor="let row of positions; let ri = index">
     <td *ngFor="let piece of row; let ci = index" class="{{piece}}" [ngClass]="{'highlight': getHighlight(ri,ci)}">
@@ -9,6 +13,6 @@
 </table>
 <div class="rb-main-button-area">
 
-  <button class="btn btn-info" (click)="loadBoard()">load board</button>
-  <button class="btn btn-info" (click)="loadNext()">load board {{currentIndex + 1}}</button>
+  <button class="btn btn-info" (click)="loadBoard()">load main board</button>
+  <button class="btn btn-info" (click)="loadNext()">load board {{currentIndex}}</button>
 </div>

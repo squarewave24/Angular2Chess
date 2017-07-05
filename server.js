@@ -3,14 +3,9 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
-
-
-
-
 const cors = require('cors');
 const multer = require('multer');
   
-
 // Get our API routes
 const api = require('./server/routes/api');
 
@@ -33,10 +28,6 @@ app.post('/upload', upload.any(), (req, res) => {
     let ext = path.extname(file.originalname);
     console.log('req.files: ', req.files);
     console.log('req.body: ', req.body);
-    // console.log('bodyParser.text: ', bodyParser.text());
-
-    // res.end(JSON.stringify(req.body, null, 2));
-
     return {
       originalName: file.originalname,
       filename: file.filename
@@ -46,15 +37,6 @@ app.post('/upload', upload.any(), (req, res) => {
 app.listen(10050, () => {
   console.log('ng2-uploader server running on port 10050.');
 });
-
-// uploader code *****
-
-// api 
-  // var router = express.Router();              // get an instance of the express Router
- 
-  // app.use('/api', router);
-
-// 
 
 // Parsers for POST data
 app.use(bodyParser.json());
