@@ -7,7 +7,7 @@
 </div>
 <table>
 	<tr *ngFor="let row of positions; let ri = index">
-    <td *ngFor="let piece of row; let ci = index" class="{{piece}}" [ngClass]="{'highlight': getHighlight(ri,ci)}">
+    <td *ngFor="let piece of row; let ci = index" class="{{piece.code}}" [ngClass]="{'highlight': piece.highlighted}">
     </td>
 	</tr>
 </table>

@@ -18,3 +18,8 @@ export interface IPosition {
     row: number,
     col: number
 }
+
+export interface IPiece {
+    code: string, 
+    highlighted: boolean
+}

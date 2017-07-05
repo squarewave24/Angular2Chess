@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 
 import { ChessService } from './chess.service';
-import { IGameBoard, IBoard, IMoveSquares, IPosition } from './interfaces';
+import { IGameBoard, IBoard, IMoveSquares, IPosition, IPiece } from './interfaces';
 
 
 @Component({
@@ -14,8 +14,7 @@ import { IGameBoard, IBoard, IMoveSquares, IPosition } from './interfaces';
 })
 export class ChessBoardComponent implements OnInit {
 
-  positions: string[][];
-  highlights: boolean[][] = [];
+  positions: Piece[][];
   currentIndex: number = 0;
   boardSummary: string;
 
@@ -59,23 +58,35 @@ export class ChessBoardComponent implements OnInit {
       ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'],
       ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
       ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
-    ]
+    ].map(row => row.map(letter => new Piece(letter))) // convert string[][] to Piece[][]
   }
   loadPieces(allPieces: string) {
     console.debug('loadPieces', allPieces);
     allPieces.split('/').forEach((row, idx) => {
-      this.positions[idx] = row.split('');
+      this.positions[idx] = row.split('').map(char => new Piece(char));
     });
   }
   setHighlight(row: number, column: number) {
-    this.highlights[row] = this.highlights[row] || [];
-    this.highlights[row][column] = true;
+    this.getPiece(row,column).highlighted = true;
   }
-  getHighlight(row: number, column: number) {
-    return this.highlights[row] && this.highlights[row][column];
-  }
+  
   clear() {
-    this.highlights = [];
+    this.positions.forEach(row => row.forEach(piece => piece.highlighted = false));
   }
+  // move(from:IPosition, to:IPosition){
+  //   this.positions[from.row][from.col] = 'e';
+  //   if (this.positions[to.col, to.row])
+  // }
+  getPiece(col:number,row:number) : Piece {
+    this.positions[row] = this.positions[row] || [];
+    return this.positions[row][col];
+  }
+}
 
+export class Piece implements IPiece {
+    code: string;
+    highlighted: boolean;
+    constructor(code: string){
+        this.code = code;
+    }
 }
