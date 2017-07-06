@@ -14,7 +14,7 @@ import { IGameBoard, IBoard, IMoveSquares, IPosition, IPiece } from './interface
 })
 export class ChessBoardComponent implements OnInit {
 
-  positions: Piece[][];
+  positions: IPiece[][];
   currentIndex: number = 0;
   boardSummary: string;
 
@@ -41,11 +41,11 @@ export class ChessBoardComponent implements OnInit {
 
     this.boardSummary = `${title || 'Main Board'} last:${from.row}:${from.col}-${to.row}:${to.col} ${board.pieces}`
     this.loadPieces(board.pieces);
-    this.setHighlight(to.row, to.col);
-    this.setHighlight(from.row, from.col);
+    this.setHighlight(to);
+    this.setHighlight(from);
 
     if (board.special_square)
-      this.setHighlight(board.special_square.row, board.special_square.col );
+      this.setHighlight(board.special_square);
   }
 
   initPositions() {
@@ -66,27 +66,45 @@ export class ChessBoardComponent implements OnInit {
       this.positions[idx] = row.split('').map(char => new Piece(char));
     });
   }
-  setHighlight(row: number, column: number) {
-    this.getPiece(row,column).highlighted = true;
+  setHighlight(pos:IPosition) {
+    this.getPiece(pos).highlighted = true;
   }
   
   clear() {
     this.positions.forEach(row => row.forEach(piece => piece.highlighted = false));
   }
-  // move(from:IPosition, to:IPosition){
-  //   this.positions[from.row][from.col] = 'e';
-  //   if (this.positions[to.col, to.row])
-  // }
-  getPiece(col:number,row:number) : Piece {
-    this.positions[row] = this.positions[row] || [];
-    return this.positions[row][col];
+  move(from:IPosition, to:IPosition){
+    var fp = this.getPiece(from)
+    this.getPiece(to).code =  fp.code;
+    fp.clear();
+  }
+  
+  getPiece(pos: IPosition) : IPiece {
+    this.positions[pos.row] = this.positions[pos.row] || [];
+    return this.positions[pos.row][pos.col];
+  }
+  moveTest() {
+    this.move(new Position(6,2), new Position(4,2));
   }
 }
 
-export class Piece implements IPiece {
+
+class Position implements IPosition {
+  row:number;
+  col:number;
+  constructor(row:number,col:number){
+    this.row = row;
+    this.col = col;
+  }
+}
+class Piece implements IPiece {
     code: string;
     highlighted: boolean;
     constructor(code: string){
         this.code = code;
+    }
+    clear() {
+      this.code = 'e';
+      this.highlighted = false;
     }
 }

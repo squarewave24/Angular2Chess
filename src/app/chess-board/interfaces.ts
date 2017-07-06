@@ -21,5 +21,6 @@ export interface IPosition {
 
 export interface IPiece {
     code: string, 
-    highlighted: boolean
+    highlighted: boolean,
+    clear: Function
 }
