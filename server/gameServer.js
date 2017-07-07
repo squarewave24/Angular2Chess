@@ -39,7 +39,7 @@ class GameServer {
                 }
                 else clearInterval(interval);
             }
-        }, 1000);
+        }, 500);
     }
 
 }

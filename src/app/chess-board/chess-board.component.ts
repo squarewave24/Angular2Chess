@@ -27,7 +27,7 @@ export class ChessBoardComponent implements OnInit {
     this.svc.moves.subscribe(msg => {
         console.debug('msg ', msg);
     });
-    this.startServer();
+    // this.startServer();
   }
 
   loadBoard() {
@@ -105,13 +105,15 @@ export class ChessBoardComponent implements OnInit {
   moveTest() {
     this.move(new Position(6,2), new Position(4,2));
   }
-  startServer() {
-    this.svc.startGameEngine();
-  }
+  // startServer() {
+  //   this.svc.startGameEngine();
+  // }
   startGame(){
     this.initPositions();
+    // trigger the game to start on the server
     this.svc.startGame().subscribe(res => {
       console.log('game started');
+      // subscribe to the incoming web socket stream 
       this.svc.subscribeMoves().subscribe(data => {
           var move = data as IMove
           console.debug('socket received: ', JSON.stringify( move ));
@@ -119,14 +121,10 @@ export class ChessBoardComponent implements OnInit {
       });
     })
   }
-  stopGame(){
-    this.svc.unsubscribeMoves();
-  }
-  isLive(){
-    return this.svc.isSubscribed();
-  }
+  
 }
 
+// local classes 
 class Position implements IPosition {
   row:number;
   col:number;
