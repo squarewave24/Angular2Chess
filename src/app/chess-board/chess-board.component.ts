@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 
 import { ChessService } from './chess.service';
-import { IGameBoard, IBoard, IMoveSquares, IPosition, IPiece } from './interfaces';
+import { IGameBoard, IBoard, IMoveSquares, IPosition, IPiece, IMove } from './interfaces';
 
 
 @Component({
@@ -17,11 +17,17 @@ export class ChessBoardComponent implements OnInit {
   positions: IPiece[][];
   currentIndex: number = 0;
   boardSummary: string;
+  highlightTrail: IPiece[] = [];
+  highlightLength: number = 4;
 
   constructor(private svc: ChessService) { }
 
   ngOnInit() {
     this.initPositions();
+    this.svc.moves.subscribe(msg => {
+        console.debug('msg ', msg);
+    });
+    this.startServer();
   }
 
   loadBoard() {
@@ -58,7 +64,7 @@ export class ChessBoardComponent implements OnInit {
       ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'],
       ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
       ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
-    ].map(row => row.map(letter => new Piece(letter))) // convert string[][] to Piece[][]
+    ].map(row => row.map(letter => new Piece(letter))) 
   }
   loadPieces(allPieces: string) {
     console.debug('loadPieces', allPieces);
@@ -67,16 +73,29 @@ export class ChessBoardComponent implements OnInit {
     });
   }
   setHighlight(pos:IPosition) {
-    this.getPiece(pos).highlighted = true;
+    var p = this.getPiece(pos);
+    p.highlighted = true;
+    this.highlightTrail.push(p);
   }
   
   clear() {
     this.positions.forEach(row => row.forEach(piece => piece.highlighted = false));
   }
   move(from:IPosition, to:IPosition){
-    var fp = this.getPiece(from)
-    this.getPiece(to).code =  fp.code;
-    fp.clear();
+    var fp = this.getPiece(from);
+    fp.highlighted = true;
+    var tp = this.getPiece(to);
+    tp.code =  fp.code;
+    tp.highlighted = true;
+    fp.code = 'e';
+
+    this.clearHighlights(fp,tp);
+  }
+  clearHighlights(...pieces:IPiece[]) {
+    this.highlightTrail.push(...pieces);
+    while (this.highlightTrail.length > this.highlightLength){
+      this.highlightTrail.shift().highlighted = false;
+    }
   }
   
   getPiece(pos: IPosition) : IPiece {
@@ -86,8 +105,27 @@ export class ChessBoardComponent implements OnInit {
   moveTest() {
     this.move(new Position(6,2), new Position(4,2));
   }
+  startServer() {
+    this.svc.startGameEngine();
+  }
+  startGame(){
+    this.initPositions();
+    this.svc.startGame().subscribe(res => {
+      console.log('game started');
+      this.svc.subscribeMoves().subscribe(data => {
+          var move = data as IMove
+          console.debug('socket received: ', JSON.stringify( move ));
+          this.move(move.from, move.to);
+      });
+    })
+  }
+  stopGame(){
+    this.svc.unsubscribeMoves();
+  }
+  isLive(){
+    return this.svc.isSubscribed();
+  }
 }
-
 
 class Position implements IPosition {
   row:number;

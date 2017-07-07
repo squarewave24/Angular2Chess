@@ -11,7 +11,8 @@ import { PostsService } from './posts.service';
 import { ChessBoardComponent } from './chess-board/chess-board.component';
 
 // import { Ng2UploaderModule } from 'ng2-uploader';
-import {ChessService } from './chess-board/chess.service';
+import { ChessService } from './chess-board/chess.service';
+import { WebSocketService } from './chess-board/websocket.service'
 
 // Define the routes
 const ROUTES = [
@@ -36,7 +37,8 @@ const ROUTES = [
   ],
   providers: [
     PostsService,
-    ChessService
+    ChessService,
+    WebSocketService
   ],
   bootstrap: [AppComponent]
 })

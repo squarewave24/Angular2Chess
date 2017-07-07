@@ -24,3 +24,8 @@ export interface IPiece {
     highlighted: boolean,
     clear: Function
 }
+
+export interface IMove {
+    from: IPosition,
+    to: IPosition
+}
